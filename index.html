@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2a0f12">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mielo Neo">
+<title>CDSS Mieloproliferativo Neonatal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2a0f12; --ink2:#4a1e22; --terra:#c4553a; --terra2:#e07a5a; --cream:#f7efe4; --paper:#fffaf3;
+  --sand:#ead9c3; --line:#e2cfb6; --muted:#7b5d55; --ok:#3f7d5c; --warn:#c98a1b; --bad:#a3262a; --blue:#2f5d7c;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif; --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  --safe-b:env(safe-area-inset-bottom,0px); --safe-t:env(safe-area-inset-top,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+button{font:inherit;cursor:pointer}
+.hidden{display:none!important}
+
+/* ============ CARÁTULA ============ */
+#cover{position:fixed;inset:0;z-index:50;overflow:hidden;color:#f7e6d4;
+  background:radial-gradient(120% 80% at 70% 15%,#5a1a1f 0%,#2a0f12 55%,#160709 100%);
+  display:flex;flex-direction:column;padding:calc(var(--safe-t) + 18px) 22px calc(var(--safe-b) + 22px)}
+#cover .grain{position:absolute;inset:0;opacity:.07;pointer-events:none;
+  background-image:repeating-radial-gradient(circle at 30% 40%,#fff 0 1px,transparent 1px 3px)}
+.cv-top{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:#d9a48f;position:relative}
+.cv-art{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0}
+.cv-art svg{width:min(88vw,400px);height:auto;max-height:46vh}
+.cv-title{position:relative}
+.cv-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--terra2);text-transform:uppercase}
+.cv-title h1{font-family:var(--serif);font-weight:800;font-size:clamp(34px,10vw,52px);line-height:.95;margin:.25em 0 .2em;letter-spacing:-.02em}
+.cv-title h1 em{font-style:italic;font-weight:400;color:var(--terra2)}
+.cv-sub{font-size:13.5px;color:#e5c9b8;max-width:34em}
+.cv-row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 18px}
+.cv-chip{font-family:var(--mono);font-size:10.5px;border:1px solid #7a3a36;border-radius:999px;padding:4px 9px;color:#f0c8b4}
+.cv-go{width:100%;border:0;border-radius:14px;padding:15px;background:var(--terra);color:#fff;font-weight:700;font-size:16px;letter-spacing:.02em;box-shadow:0 10px 30px -10px #c4553a}
+.cv-sign{margin-top:12px;font-size:11px;color:#c79c8b;text-align:center;line-height:1.4}
+@keyframes drift{0%{transform:translate(0,0)}50%{transform:translate(4px,-6px)}100%{transform:translate(0,0)}}
+@keyframes pulse{0%,100%{opacity:.55}50%{opacity:1}}
+.floaty{animation:drift 7s ease-in-out infinite}
+.blink{animation:pulse 3.2s ease-in-out infinite}
+
+/* ============ APP ============ */
+header.app{position:sticky;top:0;z-index:10;background:var(--ink);color:#f5e4d3;padding:calc(var(--safe-t) + 10px) 16px 10px;display:flex;align-items:center;gap:10px}
+header.app .t{font-family:var(--serif);font-weight:600;font-size:18px;line-height:1.1}
+header.app .s{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:#d9a48f;text-transform:uppercase}
+header.app .net{margin-left:auto;font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:999px;border:1px solid #6b3a35}
+main{padding:14px 14px calc(var(--safe-b) + 88px);max-width:760px;margin:0 auto}
+nav.tabs{position:fixed;bottom:0;left:0;right:0;z-index:20;background:var(--paper);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(6,1fr);padding-bottom:var(--safe-b)}
+nav.tabs button{border:0;background:none;padding:8px 2px 9px;font-size:10.5px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav.tabs button b{font-size:18px;line-height:1;font-weight:400}
+nav.tabs button.on{color:var(--terra);font-weight:700}
+h2{font-family:var(--serif);font-weight:600;font-size:22px;margin:6px 0 10px;letter-spacing:-.01em}
+h3{font-family:var(--serif);font-weight:600;font-size:17px;margin:16px 0 8px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:14px;margin:0 0 12px}
+.card.dark{background:var(--ink);color:#f5e4d3;border-color:var(--ink)}
+.card.alert{border-left:5px solid var(--bad)}
+.card.warnc{border-left:5px solid var(--warn)}
+.card.okc{border-left:5px solid var(--ok)}
+.card.infoc{border-left:5px solid var(--blue)}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:3px}
+.field input,.field select{width:100%;padding:10px 11px;border-radius:10px;border:1px solid var(--line);background:#fff;font:inherit;font-family:var(--mono);font-size:15px;color:var(--ink)}
+.field small{display:block;font-size:10.5px;color:var(--muted);margin-top:2px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 12px;font-size:13px;color:var(--ink)}
+.seg button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chk{display:flex;flex-wrap:wrap;gap:6px}
+.chk button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:8px 10px;font-size:13px;text-align:left;color:var(--ink)}
+.chk button.on{background:#fbe6dc;border-color:var(--terra);color:var(--ink2);font-weight:600}
+.chk button.on::before{content:"✓ ";color:var(--terra)}
+.btn{border:0;border-radius:12px;padding:12px 16px;background:var(--terra);color:#fff;font-weight:700;width:100%}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--ink)}
+.row{display:flex;gap:8px}
+.pill{display:inline-block;font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:999px;background:var(--sand);color:var(--ink2);margin:0 4px 4px 0}
+.pill.r{background:#f6d4d2;color:var(--bad)} .pill.g{background:#d8ece1;color:var(--ok)} .pill.y{background:#f7e6c4;color:#7a520c}
+.num{font-family:var(--mono);font-weight:600}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kpi div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px;text-align:center}
+.kpi b{display:block;font-family:var(--mono);font-size:18px}
+.kpi span{font-size:10.5px;color:var(--muted)}
+.ddx{border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px;background:#fff}
+.ddx .hd{display:flex;align-items:center;gap:8px}
+.ddx .hd h4{margin:0;font-family:var(--serif);font-size:16px;font-weight:600;flex:1}
+.bar{height:6px;border-radius:6px;background:var(--sand);overflow:hidden;margin:8px 0}
+.bar i{display:block;height:100%;background:var(--terra)}
+.ddx ul{margin:4px 0 0;padding-left:18px;font-size:13px}
+.ddx .q{font-size:12.5px;background:var(--cream);border-radius:8px;padding:6px 8px;margin-top:8px}
+.ddx .q b{color:var(--terra)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+details{border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:8px}
+summary{padding:11px 12px;font-weight:600;list-style:none;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"＋";float:right;color:var(--terra)}
+details[open] summary::after{content:"－"}
+details>div{padding:0 12px 12px;font-size:13.5px}
+.small{font-size:12px;color:var(--muted)}
+.foot{font-size:11px;color:var(--muted);text-align:center;margin-top:18px}
+ol.steps{padding-left:20px} ol.steps li{margin-bottom:6px}
+.dose{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--terra)}
+.tl{position:relative;padding-left:18px;border-left:2px solid var(--terra);margin-left:6px}
+.tl div{margin-bottom:12px;position:relative}
+.tl div::before{content:"";position:absolute;left:-25px;top:4px;width:10px;height:10px;border-radius:50%;background:var(--terra)}
+.tl b{font-family:var(--mono);font-size:12px;color:var(--terra)}
+</style>
+</head>
+<body>
+
+<!-- ======================== CARÁTULA ======================== -->
+<section id="cover">
+  <div class="grain"></div>
+  <div class="cv-top"><span>CDSS · Hematología neonatal</span><span id="cvNet">● offline-ready</span></div>
+  <div class="cv-art">
+    <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-label="Megacarioblasto con tres cromosomas 21">
+      <defs>
+        <radialGradient id="cyto" cx="45%" cy="40%" r="60%">
+          <stop offset="0%" stop-color="#7d8fc9"/><stop offset="60%" stop-color="#4b5aa0"/><stop offset="100%" stop-color="#2b3470"/>
+        </radialGradient>
+        <radialGradient id="nuc" cx="40%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#a65a9a"/><stop offset="70%" stop-color="#6a2560"/><stop offset="100%" stop-color="#3f1238"/>
+        </radialGradient>
+        <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#e07a5a" stop-opacity=".35"/><stop offset="100%" stop-color="#e07a5a" stop-opacity="0"/>
+        </radialGradient>
+        <pattern id="chrom" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="3" fill="#f2c1a8"/><rect y="3" width="6" height="3" fill="#c4553a"/></pattern>
+      </defs>
+      <circle cx="200" cy="190" r="185" fill="url(#halo)"/>
+      <!-- órbita: 21 marcas -->
+      <g stroke="#e07a5a" stroke-opacity=".5">
+        <circle cx="200" cy="190" r="168" fill="none" stroke-dasharray="2 24" stroke-width="3"/>
+        <circle cx="200" cy="190" r="150" fill="none" stroke-opacity=".18"/>
+      </g>
+      <!-- eritroblastos y plaquetas gigantes alrededor -->
+      <g class="floaty">
+        <circle cx="70" cy="95" r="16" fill="#d98c86"/><circle cx="70" cy="95" r="6.5" fill="#4a1338"/>
+        <circle cx="330" cy="300" r="14" fill="#d98c86"/><circle cx="330" cy="300" r="6" fill="#4a1338"/>
+        <ellipse cx="335" cy="88" rx="11" ry="8" fill="#9aa6d8" opacity=".9"/>
+        <ellipse cx="58" cy="290" rx="9" ry="6" fill="#9aa6d8" opacity=".9"/>
+        <ellipse cx="90" cy="335" rx="5" ry="3.5" fill="#9aa6d8" opacity=".8"/>
+      </g>
+      <!-- megacarioblasto con blebs citoplasmáticos -->
+      <g>
+        <path d="M200 70c34 0 46 18 62 22 18 5 36 2 44 22 8 18-6 30-2 46 5 20 24 30 18 52-6 23-28 22-38 38-11 18-4 40-28 50-22 9-36-8-56-8-22 0-34 16-56 6-23-11-14-34-26-52-10-15-32-17-36-40-4-22 14-30 18-50 4-18-10-32 0-50 10-19 30-14 48-20 18-6 26-16 52-16z" fill="url(#cyto)"/>
+        <g fill="#8796cf"><circle cx="296" cy="112" r="13"/><circle cx="316" cy="196" r="11"/><circle cx="104" cy="120" r="12"/><circle cx="96" cy="230" r="10"/><circle cx="230" cy="292" r="12"/><circle cx="150" cy="294" r="9"/></g>
+        <ellipse cx="198" cy="182" rx="80" ry="74" fill="url(#nuc)"/>
+        <g fill="#c98ac0" opacity=".35"><circle cx="170" cy="160" r="22"/><circle cx="222" cy="205" r="18"/></g>
+        <g class="blink" fill="#e8b6d9"><circle cx="175" cy="168" r="9"/><circle cx="226" cy="150" r="7"/><circle cx="210" cy="212" r="6"/></g>
+      </g>
+      <!-- trisomía 21: tres cromosomas en la base -->
+      <g transform="translate(150 332)">
+        <g><rect x="0" y="0" width="12" height="40" rx="6" fill="url(#chrom)"/><rect x="-1" y="11" width="14" height="4" rx="2" fill="#2a0f12"/></g>
+        <g transform="translate(22 0)"><rect x="0" y="0" width="12" height="40" rx="6" fill="url(#chrom)"/><rect x="-1" y="11" width="14" height="4" rx="2" fill="#2a0f12"/></g>
+        <g transform="translate(44 0)"><rect x="0" y="0" width="12" height="40" rx="6" fill="url(#chrom)"/><rect x="-1" y="11" width="14" height="4" rx="2" fill="#2a0f12"/></g>
+        <text x="72" y="28" fill="#f2c1a8" font-family="JetBrains Mono,monospace" font-size="20" font-weight="600">21</text>
+      </g>
+      <text x="200" y="26" text-anchor="middle" fill="#d9a48f" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="3">GATA1s · CD34 · CD117 · CD41 · CD61</text>
+    </svg>
+  </div>
+  <div class="cv-title">
+    <div class="cv-kicker">Síndrome mieloproliferativo neonatal</div>
+    <h1>El blasto <em>que se va</em><br>y el que se queda</h1>
+    <div class="cv-sub">Mielopoyesis anormal transitoria (TAM / LT-SD), TAM silente, leucemia congénita, mieloproliferación de las RASopatías y reacción leucemoide: reconocer, estratificar, tratar y vigilar.</div>
+    <div class="cv-row"><span class="cv-chip">BSH 2018</span><span class="cv-chip">BFM TMD07</span><span class="cv-chip">JPLSG TAM-10</span><span class="cv-chip">GATA1 / NGS</span><span class="cv-chip">PTPN11</span></div>
+    <button class="cv-go" id="goBtn">Entrar</button>
+    <div class="cv-sign">Dr. Jano Jaramillo — Médico Pediatra y Neonatólogo · Posgrado en Trastornos del Aprendizaje<br>Sala de Neonatología · Hospital Dr. Cecilio Castillero · Chitré</div>
+  </div>
+</section>
+
+<!-- ======================== APP ======================== -->
+<header class="app">
+  <div><div class="s">CDSS · Mielo Neo</div><div class="t">Mieloproliferación neonatal</div></div>
+  <span class="net" id="netState">—</span>
+</header>
+<main id="main"></main>
+<nav class="tabs" id="tabs">
+  <button data-v="eval" class="on"><b>◎</b>Evaluar</button>
+  <button data-v="ddx"><b>⋔</b>Diferencial</button>
+  <button data-v="mx"><b>✚</b>Manejo</button>
+  <button data-v="fu"><b>↻</b>Seguir</button>
+  <button data-v="cases"><b>✎</b>Casos</button>
+  <button data-v="refs"><b>≡</b>Fuentes</button>
+</nav>
+
+<script>
+"use strict";
+/* ======================= ESTADO ======================= */
+const S = {
+  ds:'conf',      // conf | sosp | no
+  eg:null, peso:null, dia:null,
+  wbc:null, blast:null, plq:null, hb:null, mono:null, neut:null,
+  bd:null, alt:null, alb:null, inr:null, fib:null, k:null, urico:null,
+  gata:'nd',      // nd | pos_ss | pos_ngs | neg
+  flow:'nd',      // nd | mega | mono | linf | neg
+  f:{}            // hallazgos clínicos
+};
+const FINDINGS = [
+  ['hm','Hepatomegalia'],['esp','Esplenomegalia'],['asc','Ascitis'],['derr','Derrame pleural / pericárdico'],
+  ['anas','Anasarca / hidrops'],['hemo','Sangrado parenquimatoso / CID'],['ictcol','Ictericia colestásica'],
+  ['resp','Dificultad respiratoria no explicada por cardiopatía'],['icc','Insuficiencia cardiaca no explicada por cardiopatía'],
+  ['visc','Hiperviscosidad / leucostasis'],['rash','Erupción vesiculopustular (cara/cuero cabelludo)'],
+  ['cutis','Nódulos cutáneos azulados ("blueberry muffin")'],['noonan','Fenotipo Noonan / RASopatía (MCH, estenosis pulmonar, cuello alado, ptosis)'],
+  ['sepsis','Sepsis / corioamnionitis / infección documentada'],['cortic','Corticoide antenatal en las últimas 72 h'],
+  ['hemol','Hemólisis / isoinmunización'],['torch','Sospecha TORCH / parvovirus'],['renal','Falla renal / oliguria'],
+  ['fetal','Hallazgos fetales: hepatoesplenomegalia, derrames, hidrops']
+];
+
+/* ======================= UTILIDADES ======================= */
+const $ = s=>document.querySelector(s);
+const n = v => (v===null||v===''||isNaN(v))?null:Number(v);
+const has = k => !!S.f[k];
+function esc(t){return String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function fmt(x,d=1){return x===null?'—':(Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toString()}
+
+/* ======================= MOTOR ======================= */
+function engine(){
+  const wbc=n(S.wbc), bl=n(S.blast), plq=n(S.plq), mono=n(S.mono), bd=n(S.bd), alb=n(S.alb), eg=n(S.eg), peso=n(S.peso), alt=n(S.alt), neut=n(S.neut), dia=n(S.dia);
+  const absBl = (wbc!==null&&bl!==null)? wbc*bl/100 : null;
+  const ds = S.ds;
+  const gataPos = S.gata==='pos_ss'||S.gata==='pos_ngs';
+  const hepDys = has('ictcol') || (bd!==null&&bd>=2) || (alt!==null&&alt>=100) || has('hm')&&(bd!==null&&bd>=1.5);
+  const effusion = has('asc')||has('derr')||has('anas');
+
+  // --- Criterios de gravedad (BSH 2018 / BFM TMD07) ---
+  const sev = [];
+  if(wbc!==null&&wbc>100) sev.push('Leucocitos >100×10⁹/L');
+  if(has('anas')) sev.push('Hidrops / anasarca');
+  if(has('asc')||has('derr')) sev.push('Ascitis o derrames');
+  if(hepDys) sev.push('Disfunción hepática (colestasis, transaminasas altas)');
+  const inrV=n(S.inr), fibV=n(S.fib);
+  if(has('hemo')||(inrV!==null&&inrV>2)||(fibV!==null&&fibV<100)) sev.push('CID / coagulopatía o sangrado');
+  if(has('resp')) sev.push('Falla respiratoria no explicada por cardiopatía');
+  if(has('icc')) sev.push('Falla cardiaca no explicada por cardiopatía');
+  if(has('visc')) sev.push('Hiperviscosidad / leucostasis');
+  if(has('renal')) sev.push('Falla renal');
+
+  // --- Factores pronósticos de muerte temprana (TAM-10, Massey, Klusmann, Muramatsu) ---
+  const prog = [];
+  if(eg!==null&&eg<37) prog.push('EG <37 sem');
+  if(peso!==null&&peso<2500) prog.push('Bajo peso al nacer');
+  if(wbc!==null&&wbc>=100) prog.push('Leucocitos ≥100×10⁹/L');
+  if(has('anas')) prog.push('Anasarca (no rescatada por citarabina en TAM-10)');
+  if(bd!==null&&bd>=5) prog.push('Bilirrubina directa ≥5 mg/dL');
+  if(has('hemo')) prog.push('Sangrado parenquimatoso');
+  if(has('asc')) prog.push('Ascitis');
+  if(alb!==null&&alb<2.5) prog.push('Albúmina baja (<2,5 g/dL, orientativo)');
+
+  // --- Diferencial pluralista ---
+  const D = [];
+  const add=(id,name,score,pro,con,q,tag)=>D.push({id,name,score:Math.max(0,Math.min(100,score)),pro,con,q,tag});
+
+  // 1. TAM / LT-SD clásico
+  {let s=0,p=[],c=[];
+    if(ds==='conf'){s+=30;p.push('Trisomía 21 confirmada');} else if(ds==='sosp'){s+=18;p.push('Fenotipo sugestivo de síndrome de Down');} else {s+=4;c.push('Sin síndrome de Down aparente: TAM sólo en mosaicismo con trisomía 21 restringida a la línea hematopoyética');}
+    if(bl!==null){ if(bl>10){s+=28;p.push('Blastos >10% en sangre periférica');} else {s-=10;c.push('Blastos ≤10%: por debajo del umbral clásico');} }
+    if(bl!==null&&bl>20&&wbc!==null&&wbc>45){s+=8;p.push('Blastos >20% con leucocitos >45: los rasgos hematológicos más específicos (OIDSCS)');}
+    if(S.flow==='mega'){s+=14;p.push('Citometría: blastos megacarioblásticos (CD34/CD117/CD41/CD61, MPO−)');}
+    if(S.flow==='mono'||S.flow==='linf'){s-=14;c.push('Inmunofenotipo no megacarioblástico');}
+    if(S.gata==='pos_ss'){s+=22;p.push('GATA1 mutado por Sanger/DHPLC');} if(S.gata==='neg'&&bl!==null&&bl>10){s-=12;c.push('GATA1 negativo con blastos altos: repetir con NGS o pensar en otra entidad');}
+    if(has('hm')||has('esp')){s+=5;p.push('Hepato/esplenomegalia');}
+    if(effusion){s+=4;p.push('Derrames / ascitis');}
+    if(has('rash')){s+=4;p.push('Erupción vesiculopustular (infiltración cutánea por blastos)');}
+    if(dia!==null&&dia>90){s-=10;c.push('Más de 3 meses de vida: TAM suele resolver en ese plazo; si persiste, descartar evolución a ML-DS');}
+    add('tam','Mielopoyesis anormal transitoria (TAM / LT-SD)',s,p,c,'¿Hay GATA1 mutado y blastos megacarioblásticos? Si no hay GATA1 disponible: frotis revisado por hematólogo + citometría antes de transfundir.','TAM');}
+
+  // 2. TAM silente
+  {let s=0,p=[],c=[];
+    if(ds==='conf'){s+=25;p.push('Trisomía 21 confirmada');} else if(ds==='sosp'){s+=12;} else {c.push('Exige trisomía 21');}
+    if(bl!==null&&bl<=10){s+=25;p.push('Blastos ≤10% (en el RN Down casi siempre hay algún blasto)');} else if(bl!==null){s-=15;c.push('Blastos >10%: corresponde a TAM clínico');}
+    if(S.gata==='pos_ngs'){s+=40;p.push('Clon GATA1 pequeño detectado sólo por NGS');}
+    if(S.gata==='neg'){s-=20;c.push('GATA1 negativo por NGS');}
+    if(S.gata==='nd'){c.push('Sin estudio de GATA1: no se puede confirmar ni excluir');}
+    add('silent','TAM silente (clon GATA1 pequeño)',s,p,c,'¿Se pidió NGS de GATA1? Sin él, este niño es indistinguible del Down sin clon y comparte el riesgo de ML-DS: vigilar igual.','TAM');}
+
+  // 3. Leucemia congénita (no TAM)
+  {let s=0,p=[],c=[];
+    if(ds==='no'){s+=25;p.push('Sin síndrome de Down');} else {s+=3;c.push('En el RN con Down los blastos son casi siempre TAM');}
+    if(bl!==null&&bl>20){s+=18;p.push('Blastos >20%');}
+    if(has('cutis')){s+=20;p.push('Leucemia cutis ("blueberry muffin")');}
+    if(S.flow==='mono'){s+=18;p.push('Inmunofenotipo monoblástico / mielomonocítico (típico de reordenamiento KMT2A)');}
+    if(S.flow==='linf'){s+=14;p.push('Inmunofenotipo linfoide');}
+    if(S.gata==='pos_ss'||S.gata==='pos_ngs'){s-=25;c.push('GATA1 mutado apunta a TAM');}
+    if(has('hm')||has('esp')){s+=5;p.push('Visceromegalia');}
+    if(plq!==null&&plq<50){s+=4;p.push('Trombocitopenia marcada');}
+    add('lc','Leucemia congénita (LMA/LLA; KMT2A)',s,p,c,'¿Hay síndrome de Down o mosaicismo? Médula ósea con citogenética (KMT2A/11q23) y cariotipo constitucional de fibroblasto o mucosa.','LC');}
+
+  // 4. Mieloproliferación de Noonan / LMMJ
+  {let s=0,p=[],c=[];
+    if(has('noonan')){s+=35;p.push('Fenotipo Noonan / RASopatía');}
+    if(mono!==null&&mono>1){s+=22;p.push('Monocitosis >1×10⁹/L');}
+    if(has('esp')){s+=12;p.push('Esplenomegalia');}
+    if(plq!==null&&plq<100){s+=6;p.push('Trombocitopenia');}
+    if(bl!==null&&bl<20){s+=4;} if(bl!==null&&bl>20){s-=10;c.push('Blastos >20% no es lo típico');}
+    if(ds==='conf'){s-=20;c.push('Trisomía 21 confirmada');}
+    add('noonan','Mieloproliferación asociada a Noonan (NS-MPD) / LMMJ neonatal',s,p,c,'¿Monocitos absolutos >1×10⁹/L con esplenomegalia y facies de Noonan? Pedir PTPN11 (codón 61 = más riesgo) y Hb fetal; en varones la forma neonatal grave puede ser letal.','NS');}
+
+  // 5. Reacción leucemoide
+  {let s=0,p=[],c=[];
+    if(wbc!==null&&wbc>50){s+=12;p.push('Leucocitosis marcada');}
+    if(neut!==null&&wbc!==null&&neut/wbc>0.6){s+=12;p.push('Predominio de neutrófilos maduros / desviación izquierda');}
+    if(has('sepsis')){s+=25;p.push('Sepsis, corioamnionitis o infección');}
+    if(has('cortic')){s+=12;p.push('Corticoide antenatal reciente');}
+    if(bl!==null&&bl<=5){s+=10;p.push('Blastos escasos');} if(bl!==null&&bl>10){s-=15;c.push('Blastos >10% no son reacción leucemoide');}
+    if(ds==='conf'&&bl!==null&&bl>10){s-=10;}
+    add('lr','Reacción leucemoide (infecciosa, corticoidea, estrés)',s,p,c,'¿Los "blastos" son en realidad mielocitos/metamielocitos? Pedir lectura del frotis por hematólogo y PCR/hemocultivo; reevaluar en 48–72 h tras tratar la causa.','LR');}
+
+  // 6. Eritroblastosis / hidrops no TAM
+  {let s=0,p=[],c=[];
+    if(has('hemol')){s+=30;p.push('Hemólisis / isoinmunización');}
+    if(has('torch')){s+=22;p.push('Sospecha TORCH o parvovirus B19');}
+    if(has('anas')){s+=8;p.push('Hidrops');}
+    if(n(S.hb)!==null&&n(S.hb)<12){s+=8;p.push('Anemia');}
+    if(S.flow==='mega'||(S.gata!=='nd'&&S.gata!=='neg')){s-=20;c.push('Marcadores de TAM presentes');}
+    c.push('Los eritroblastos circulantes inflan el recuento de leucocitos: corregir el conteo');
+    add('ery','Eritroblastemia (hemólisis, TORCH, parvovirus) / hidrops no clonal',s,p,c,'¿Coombs directo positivo, reticulocitos altos o serologías? Corrija los leucocitos por eritroblastos antes de interpretar.','ER');}
+
+  // 7. Hematología habitual del Down sin clon
+  {let s=0,p=[],c=[];
+    if(ds==='conf'){s+=20;p.push('Trisomía 21');}
+    if(bl!==null&&bl<=10){s+=15;p.push('Blastos bajos');}
+    if(plq!==null&&plq<150){s+=8;p.push('Trombocitopenia leve, frecuente en el RN con Down');}
+    if(S.gata==='neg'){s+=25;p.push('GATA1 negativo por NGS');}
+    if(gataPos){s-=30;c.push('GATA1 mutado');}
+    c.push('Policitemia, macrocitosis, neutrofilia y trombocitopenia son comunes por efecto de la trisomía, sin clon');
+    add('dsheme','Alteraciones hematológicas propias del RN con Down, sin clon GATA1',s,p,c,'¿El frotis muestra blastos ≤10% y GATA1 negativo por método sensible? Entonces el riesgo de ML-DS es el basal del síndrome de Down.','DS');}
+
+  D.sort((a,b)=>b.score-a.score);
+
+  // nivel de manejo
+  let tier='na';
+  const tamLikely = D[0].id==='tam' || (ds!=='no'&&bl!==null&&bl>10);
+  if(tamLikely){ tier = sev.length? 'grave':'vigil'; }
+  else if(D[0].id==='silent') tier='silent';
+  return {absBl,sev,prog,D,tier,tamLikely,hepDys};
+}
+
+/* ======================= VISTAS ======================= */
+let view='eval';
+const V = {};
+
+V.eval = ()=>{
+  const r = engine();
+  const segDs = [['conf','T21 confirmada'],['sosp','Fenotipo Down'],['no','Sin Down']].map(([k,l])=>`<button data-ds="${k}" class="${S.ds===k?'on':''}">${l}</button>`).join('');
+  const segG = [['nd','No disponible'],['pos_ss','+ Sanger'],['pos_ngs','+ sólo NGS'],['neg','Negativo']].map(([k,l])=>`<button data-g="${k}" class="${S.gata===k?'on':''}">${l}</button>`).join('');
+  const segF = [['nd','No disponible'],['mega','Megacarioblástico'],['mono','Monoblástico'],['linf','Linfoide'],['neg','Sin blastos']].map(([k,l])=>`<button data-fl="${k}" class="${S.flow===k?'on':''}">${l}</button>`).join('');
+  const fld=(id,l,u,h)=>`<div class="field"><label>${l} ${u?`<span class="small">(${u})</span>`:''}</label><input inputmode="decimal" data-k="${id}" value="${S[id]??''}">${h?`<small>${h}</small>`:''}</div>`;
+  const chips = FINDINGS.map(([k,l])=>`<button data-f="${k}" class="${S.f[k]?'on':''}">${l}</button>`).join('');
+  return `
+  <h2>Evaluar al recién nacido</h2>
+  <div class="card infoc"><div class="lbl">Regla de oro</div>
+  Todo RN con síndrome de Down (o fenotipo sugestivo) necesita <b>hemograma con frotis revisado por hematólogo en las primeras 72 h</b> y <b>antes de cualquier transfusión</b>; los blastos descienden con los días y la transfusión los diluye.</div>
+
+  <div class="card"><div class="lbl">Contexto</div>
+    <div class="seg" style="margin-bottom:10px">${segDs}</div>
+    <div class="grid2">${fld('eg','Edad gestacional','sem')}${fld('peso','Peso','g')}${fld('dia','Día de vida','d')}</div>
+  </div>
+
+  <div class="card"><div class="lbl">Hemograma y frotis</div>
+    <div class="grid2">
+      ${fld('wbc','Leucocitos','×10⁹/L','Corregidos por eritroblastos')}
+      ${fld('blast','Blastos','%')}
+      ${fld('neut','Neutrófilos','×10⁹/L')}
+      ${fld('mono','Monocitos','×10⁹/L')}
+      ${fld('plq','Plaquetas','×10⁹/L')}
+      ${fld('hb','Hemoglobina','g/dL')}
+    </div>
+  </div>
+
+  <div class="card"><div class="lbl">Hígado, coagulación, lisis</div>
+    <div class="grid2">
+      ${fld('bd','Bilirrubina directa','mg/dL')}
+      ${fld('alt','ALT','U/L')}
+      ${fld('alb','Albúmina','g/dL')}
+      ${fld('inr','INR','')}
+      ${fld('fib','Fibrinógeno','mg/dL')}
+      ${fld('k','Potasio','mmol/L')}
+      ${fld('urico','Ácido úrico','mg/dL')}
+    </div>
+  </div>
+
+  <div class="card"><div class="lbl">Biología del blasto</div>
+    <div class="small" style="margin-bottom:4px">Mutación de GATA1</div><div class="seg" style="margin-bottom:10px">${segG}</div>
+    <div class="small" style="margin-bottom:4px">Citometría de flujo</div><div class="seg">${segF}</div>
+  </div>
+
+  <div class="card"><div class="lbl">Hallazgos clínicos</div><div class="chk">${chips}</div></div>
+
+  ${resultCard(r)}
+  <div class="row"><button class="btn ghost" id="reset">Limpiar</button><button class="btn" data-go="ddx">Ver diferencial →</button></div>
+  `;
+};
+
+function resultCard(r){
+  const wbc=n(S.wbc), bl=n(S.blast);
+  let head='', cls='card infoc', body='';
+  if(wbc===null||bl===null){
+    return `<div class="card"><div class="lbl">Resultado</div><span class="small">Ingrese al menos leucocitos y % de blastos.</span></div>`;
+  }
+  if(r.tier==='grave'){cls='card alert';head='TAM con criterios de gravedad';
+    body=`Indicación de <b>citarabina a dosis baja</b> junto con soporte intensivo, coordinado con hemato-oncología pediátrica (BSH 2018; BFM TMD07; JPLSG TAM-10).`;}
+  else if(r.tier==='vigil'){cls='card warnc';head='TAM sin criterios de gravedad';
+    body=`Observación estrecha sin quimioterapia: la mayoría remite sola en 2–3 meses. Hemograma, función hepática y coagulación seriados; reevaluar si aparece cualquier criterio de gravedad.`;}
+  else if(r.tier==='silent'){cls='card okc';head='Compatible con TAM silente o hematología del Down';
+    body=`Sin indicación de tratamiento. Si hay clon GATA1, mismo seguimiento hasta los 4 años que el TAM clínico.`;}
+  else {head='El patrón no es de TAM';body=`Revise el diferencial: leucemia congénita, mieloproliferación de Noonan o reacción leucemoide.`;}
+  const sev = r.sev.length? r.sev.map(x=>`<span class="pill r">${x}</span>`).join(''):'<span class="pill g">Ninguno</span>';
+  const prog = r.prog.length? r.prog.map(x=>`<span class="pill y">${x}</span>`).join(''):'<span class="pill g">Ninguno</span>';
+  const plq=n(S.plq), k=n(S.k), ur=n(S.urico), inr=n(S.inr), fib=n(S.fib);
+  const extra=[];
+  if(r.absBl!==null&&r.absBl>50) extra.push('Blastos absolutos >50×10⁹/L: riesgo de leucostasis y lisis; hidratación y vigilancia de K⁺, P, ácido úrico y creatinina.');
+  if((k!==null&&k>6.5)||(ur!==null&&ur>8)) extra.push('Laboratorio compatible con lisis tumoral: manejo de hiperpotasemia, alopurinol; rasburicasa sólo descartado déficit de G6PD.');
+  if((inr!==null&&inr>2)||(fib!==null&&fib<100)) extra.push('Coagulopatía significativa: plasma/crioprecipitado según sangrado y procedimientos.');
+  if(plq!==null&&plq<25) extra.push('Plaquetas <25×10⁹/L: umbral restrictivo de transfusión profiláctica (PlaNeT-2), más alto si sangra o hay CID.');
+  if(has('anas')) extra.push('Anasarca: el factor pronóstico más ominoso; en TAM-10 la citarabina no cambió la supervivencia. Hable con la familia sobre pronóstico desde el inicio.');
+  return `<div class="${cls}"><div class="lbl">Resultado</div>
+    <div style="font-family:var(--serif);font-size:19px;font-weight:600;margin-bottom:6px">${head}</div>
+    <div class="kpi" style="margin:8px 0 10px"><div><b>${fmt(r.absBl,1)}</b><span>Blastos abs ×10⁹/L</span></div><div><b>${r.sev.length}</b><span>Criterios de gravedad</span></div><div><b>${r.prog.length}</b><span>Factores de muerte temprana</span></div></div>
+    <p style="margin:6px 0">${body}</p>
+    <div class="small" style="margin:8px 0 4px">Criterios de gravedad (indican tratamiento)</div>${sev}
+    <div class="small" style="margin:8px 0 4px">Factores pronósticos de muerte temprana</div>${prog}
+    ${extra.length?`<ul style="margin:10px 0 0;padding-left:18px;font-size:13px">${extra.map(e=>`<li>${e}</li>`).join('')}</ul>`:''}
+  </div>`;
+}
+
+V.ddx = ()=>{
+  const r=engine();
+  return `<h2>Diferencial pluralista</h2>
+  <p class="small">Todas las categorías quedan visibles a propósito: el puntaje ordena, no excluye. La pregunta discriminante de cada una es lo que cambia la conducta.</p>
+  ${r.D.map((d,i)=>`<div class="ddx"><div class="hd"><span class="pill ${i===0?'r':''}">${d.tag}</span><h4>${d.name}</h4><span class="num">${d.score}</span></div>
+   <div class="bar"><i style="width:${d.score}%"></i></div>
+   ${d.pro.length?`<div class="small">A favor</div><ul>${d.pro.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
+   ${d.con.length?`<div class="small" style="margin-top:4px">En contra / cautela</div><ul>${d.con.map(x=>`<li>${x}</li>`).join('')}</ul>`:''}
+   <div class="q"><b>Pregunta discriminante:</b> ${d.q}</div></div>`).join('')}
+  <div class="card"><div class="lbl">Claves morfológicas</div>
+  <table><tr><th>Hallazgo</th><th>Apunta a</th></tr>
+  <tr><td>Blastos con protrusiones citoplasmáticas, basofilia, plaquetas gigantes, micromegacariocitos</td><td>TAM (megacarioblastos)</td></tr>
+  <tr><td>Blastos monoblásticos, promonocitos, leucemia cutis</td><td>Leucemia congénita (KMT2A)</td></tr>
+  <tr><td>Monocitosis >1×10⁹/L, precursores mieloides, Hb fetal alta</td><td>NS-MPD / LMMJ</td></tr>
+  <tr><td>Desviación izquierda madura, granulación tóxica, vacuolas</td><td>Reacción leucemoide</td></tr>
+  <tr><td>Eritroblastos abundantes sin blastos mieloides</td><td>Hemólisis, hipoxia, TORCH, parvovirus</td></tr></table></div>`;
+};
+
+V.mx = ()=>{
+  const w=n(S.peso);
+  const kg = w? w/1000 : null;
+  return `<h2>Manejo</h2>
+  <div class="card dark"><div class="lbl" style="color:#d9a48f">Principio</div>
+  El TAM asintomático <b>no se trata</b>: se vigila. Se trata el TAM que amenaza la vida, y se trata pronto. La citarabina a dosis baja reduce la muerte temprana del TAM sintomático, pero <b>no previene</b> la progresión a leucemia mieloide del Down (ML-DS).</div>
+
+  <h3>1 · Soporte (todos los TAM sintomáticos)</h3>
+  <details open><summary>Hemoderivados</summary><div>
+  <ul><li>Tomar muestras diagnósticas (frotis, citometría, GATA1, cariotipo) <b>antes</b> de transfundir.</li>
+  <li>Plaquetas: profilaxis restrictiva &lt;25×10⁹/L en el estable (PlaNeT-2); &lt;50×10⁹/L si sangra, hay CID o procedimiento.</li>
+  <li>Glóbulos rojos con umbrales restrictivos según edad y soporte respiratorio; irradiados y leucorreducidos si hay posibilidad de quimioterapia.</li>
+  <li>CID: plasma fresco congelado 10–15 mL/kg y crioprecipitado si fibrinógeno &lt;100 mg/dL con sangrado.</li></ul></div></details>
+  <details><summary>Hiperleucocitosis y lisis</summary><div>
+  <ul><li>Hidratación generosa si la función cardiaca y los derrames lo permiten; balance estricto.</li>
+  <li>K⁺, fósforo, calcio, ácido úrico y creatinina cada 12–24 h mientras los blastos sean altos o al iniciar citarabina.</li>
+  <li>Alopurinol si hay riesgo de lisis; rasburicasa sólo con G6PD normal.</li>
+  <li>Exanguinotransfusión o leucaféresis: evidencia débil; en TAM-10 no se asoció a mejor supervivencia. Considerar sólo en leucostasis sintomática mientras actúa la citarabina.</li></ul></div></details>
+  <details><summary>Hígado</summary><div>
+  <ul><li>La causa principal de muerte temprana es la fibrosis hepática por infiltración megacarioblástica; la colestasis es la señal de alarma.</li>
+  <li>Bilirrubina directa, transaminasas, albúmina y coagulación seriadas; ecografía hepática.</li>
+  <li>Ácido ursodesoxicólico en colestasis: práctica común, evidencia baja.</li>
+  <li>Biopsia hepática: sólo en centros con experiencia, cuando el diagnóstico de la colestasis no está claro.</li></ul></div></details>
+  <details><summary>Respiratorio, cardiaco, derrames</summary><div>
+  <ul><li>Ecocardiograma: separar la falla cardiaca por cardiopatía congénita (frecuente en Down) de la causada por TAM o anemia.</li>
+  <li>Toracocentesis/paracentesis si compromete la ventilación; enviar líquido a citología (puede haber megacarioblastos).</li></ul></div></details>
+
+  <h3>2 · Citarabina a dosis baja (TAM grave)</h3>
+  <div class="card alert"><div class="lbl">Indicaciones</div>
+  Leucocitos &gt;100×10⁹/L · hidrops o derrames · disfunción hepática · CID o sangrado · falla cardiorrespiratoria no explicada por cardiopatía · hiperviscosidad · falla multiorgánica (BSH 2018; BFM TMD07).</div>
+  <div class="card"><div class="lbl">Cálculo por peso</div>
+  <div class="field"><label>Peso actual (g)</label><input inputmode="decimal" data-k="peso" value="${S.peso??''}"></div>
+  <div class="grid2" style="margin-top:10px">
+    <div><div class="small">1 mg/kg/día</div><div class="dose">${kg?fmt(kg*1,2)+' mg':'—'}</div></div>
+    <div><div class="small">1,5 mg/kg/día</div><div class="dose">${kg?fmt(kg*1.5,2)+' mg':'—'}</div></div>
+  </div>
+  <p class="small" style="margin-top:8px">Esquema: <b>1–1,5 mg/kg/día IV o SC durante 5–7 días</b> (BSH 1–1,5 mg/kg/día; BFM 1,5 mg/kg/día × 7 días). Un segundo ciclo puede darse si reaparecen síntomas o blastos. Decisión y prescripción siempre con hemato-oncología pediátrica.</p></div>
+  <details><summary>Vigilancia durante la citarabina</summary><div>
+  <ul><li>Hemograma diario al inicio: el objetivo es el descenso de blastos y leucocitos, no la aplasia.</li>
+  <li>Mielosupresión e infección son la toxicidad principal: aislamiento, cultivos ante fiebre o inestabilidad.</li>
+  <li>Función hepática y renal; vigilancia de lisis.</li>
+  <li>Prednisolona: usada en algunos centros japoneses para la disfunción hepática; evidencia insuficiente para recomendarla de rutina.</li></ul></div></details>
+
+  <h3>3 · Traslado</h3>
+  <div class="card warnc">Coordinar con hemato-oncología pediátrica (p. ej., Hospital del Niño Dr. José Renán Esquivel) ante: TAM grave, blastos en un RN sin síndrome de Down, sospecha de leucemia congénita o de NS-MPD/LMMJ, o falta de citometría. Enviar frotis, tubos con EDTA y, si es posible, sangre para GATA1 antes de transfundir.</div>
+
+  <h3>4 · Conversación con la familia</h3>
+  <div class="card">Lo que suele ayudar: que el TAM suele desaparecer solo; que 1 de cada 5 puede complicarse en los primeros meses; que alrededor de 1 de cada 5 sobrevivientes desarrolla leucemia antes de los 4 años, con buena respuesta al tratamiento cuando se detecta pronto; y que el seguimiento es el verdadero tratamiento preventivo.</div>`;
+};
+
+V.fu = ()=>`<h2>Seguimiento</h2>
+<div class="card"><div class="lbl">Calendario sugerido (BSH 2018)</div>
+<div class="tl">
+<div><b>0–72 h</b><br>Hemograma y frotis en todo RN con Down. Si blastos &gt;10%: citometría y GATA1; ecografía abdominal; función hepática y coagulación.</div>
+<div><b>Hasta la resolución</b><br>TAM sintomático: hemograma frecuente (diario a semanal según gravedad). TAM asintomático: semanal o quincenal hasta que desaparezcan los blastos (habitualmente 2–3 meses).</div>
+<div><b>3 meses</b><br>Si los blastos no desaparecen o reaparecen: médula ósea y descartar ML-DS precoz.</div>
+<div><b>Hasta 2 años</b><br>Hemograma cada 3 meses en TAM y TAM silente.</div>
+<div><b>2–4 años</b><br>Hemograma cada 6 meses. La ML-DS se presenta sobre todo entre los 1 y 4 años.</div>
+</div></div>
+<div class="card warnc"><div class="lbl">Señales para consultar antes</div>
+Palidez, petequias o hematomas, infecciones repetidas, fiebre sin foco, decaimiento, abdomen que crece. A menudo la ML-DS va precedida de una fase de trombocitopenia progresiva (mielodisplasia): una caída de plaquetas en un niño con antecedente de TAM merece frotis y consulta.</div>
+<div class="card infoc"><div class="lbl">Sin GATA1 disponible</div>
+En nuestro medio la NGS de GATA1 rara vez está disponible. Consecuencia práctica: todo RN con Down y blastos en el frotis neonatal entra al mismo calendario de vigilancia hasta los 4 años, aunque no haya cumplido el umbral de 10%.</div>
+<div class="card"><div class="lbl">Otros escenarios</div>
+<ul style="margin:0;padding-left:18px">
+<li><b>NS-MPD:</b> vigilancia de monocitos, plaquetas, bazo y Hb fetal; muchas remiten en el primer año, pero la forma neonatal grave puede ser letal y algunas progresan a LMMJ que requiere trasplante.</li>
+<li><b>Leucemia congénita:</b> manejo oncológico; algunos casos con KMT2A remiten espontáneamente, por lo que a veces se opta por vigilancia en pacientes estables, decisión de oncología.</li></ul></div>`;
+
+const CASES=[
+ {t:'Caso 1 · El de las 36 horas',q:'RN masculino de 38 semanas, 3 100 g, con fenotipo Down y CIA. A las 36 h: leucocitos 38×10⁹/L, blastos 24%, plaquetas 92×10⁹/L, Hb 19 g/dL. Hígado a 2 cm, sin ictericia, sin derrames, BD 0,6 mg/dL. ¿Qué hace?',
+  a:'TAM probable sin criterios de gravedad. No se trata. Citometría y GATA1 si se puede, cariotipo, ecografía abdominal, hemograma y función hepática seriados. Calendario de vigilancia hasta los 4 años. Explicar a la familia el doble horizonte: complicación temprana posible pero poco probable aquí, y riesgo de ML-DS después.'},
+ {t:'Caso 2 · El prematuro que se hincha',q:'RN de 34 semanas, 2 050 g, trisomía 21 confirmada. Día 3: leucocitos 146×10⁹/L, blastos 62%, ascitis, derrame pleural bilateral, BD 6,2 mg/dL, INR 2,4, plaquetas 31×10⁹/L. ¿Cuál es la conducta y cuál el pronóstico?',
+  a:'TAM grave: leucocitos >100, derrames, disfunción hepática y CID. Citarabina 1–1,5 mg/kg/día por 5–7 días (≈2,1–3,1 mg/día) con hemato-oncología, soporte con plasma, crioprecipitado y plaquetas, prevención de lisis y drenaje si compromete la ventilación. Pronóstico reservado: prematurez, bajo peso, leucocitos ≥100 y BD ≥5 suman riesgo de muerte temprana; si progresa a anasarca, el beneficio de la citarabina es incierto.'},
+ {t:'Caso 3 · El que no tiene Down',q:'RN de término con facies peculiar, cuello corto, estenosis pulmonar valvular. Día 5: leucocitos 42×10⁹/L, monocitos 6×10⁹/L, blastos 4%, plaquetas 60×10⁹/L, bazo a 4 cm. ¿Qué sospecha y qué pide?',
+  a:'Mieloproliferación asociada a Noonan (NS-MPD) o LMMJ neonatal. Pedir PTPN11 (y panel RASopatías), Hb fetal, citometría, interconsulta con hemato-oncología. No es TAM: no hay trisomía 21 ni blastos altos. Vigilar estrechamente; en varones con mutaciones del codón 61 la forma neonatal puede ser grave.'},
+ {t:'Caso 4 · Los blastos que no eran',q:'RN de 39 semanas, sin rasgos de Down, madre con corioamnionitis. Leucocitos 68×10⁹/L, "blastos" 3%, mielocitos y metamielocitos 22%, granulación tóxica, PCR 9 mg/dL. ¿Diagnóstico?',
+  a:'Reacción leucemoide infecciosa. Tratar la sepsis, hemocultivos, repetir hemograma en 48–72 h. Si persistieran blastos verdaderos tras la mejoría clínica, pedir citometría y descartar leucemia congénita o mosaicismo de trisomía 21.'}
+];
+V.cases = ()=>`<h2>Casos para docencia</h2><p class="small">Formato tipo Step: lea, decida, luego abra la respuesta.</p>
+${CASES.map(c=>`<div class="card"><div class="lbl">${c.t}</div><p style="margin:4px 0 10px">${c.q}</p><details><summary>Respuesta razonada</summary><div>${c.a}</div></details></div>`).join('')}`;
+
+V.refs = ()=>`<h2>Fuentes</h2>
+<div class="card"><ol class="steps small" style="color:var(--ink)">
+<li>Tunstall O, Bhatnagar N, James B, et al. Guidelines for the investigation and management of transient leukaemia of Down syndrome. <i>Br J Haematol</i> 2018;182:200-211. doi:10.1111/bjh.15390</li>
+<li>Al-Kershi S, Golnik R, Flasinski M, et al. Recommendations for diagnosis and treatment of children with TAM and ML-DS. <i>Klin Padiatr</i> 2021;233:267-277. doi:10.1055/a-1532-2016</li>
+<li>Flasinski M, Scheibke K, Zimmermann M, et al. Low-dose cytarabine to prevent myeloid leukemia in children with Down syndrome: TMD Prevention 2007 study. <i>Blood Adv</i> 2018;2:1532-1540.</li>
+<li>Yamato G, Deguchi T, Terui K, et al. Predictive factors for the development of leukemia in patients with TAM and Down syndrome (JPLSG TAM-10). <i>Leukemia</i> 2021;35:1480-1484.</li>
+<li>Roberts I, Alford K, Hall G, et al. GATA1-mutant clones are frequent and often unsuspected in babies with Down syndrome: identification of a population at risk of leukemia. <i>Blood</i> 2013;122:3908-3917.</li>
+<li>Bhatnagar N, Nizery L, Tunstall O, et al. Transient abnormal myelopoiesis and AML in Down syndrome: an update. <i>Curr Hematol Malig Rep</i> 2016;11:333-341. Y resumen OIDSCS, <i>Arch Dis Child</i> 2016;101(Suppl 1):A217.</li>
+<li>Goemans BF, Noort S, Blink M, et al. Sensitive GATA1 mutation screening reliably identifies neonates with Down syndrome at risk for myeloid leukemia. <i>Leukemia</i> 2021;35:2403-2406.</li>
+<li>Klusmann JH, Creutzig U, Zimmermann M, et al. Treatment and prognostic impact of transient leukemia in neonates with Down syndrome. <i>Blood</i> 2008;111:2991-2998.</li>
+<li>Massey GV, Zipursky A, Chang MN, et al. A prospective study of the natural history of transient leukemia in neonates with Down syndrome (POG 9481). <i>Blood</i> 2006;107:4606-4613.</li>
+<li>Gamis AS, Alonzo TA, Gerbing RB, et al. Natural history of transient myeloproliferative disorder clinically diagnosed in Down syndrome neonates (COG A2971). <i>Blood</i> 2011;118:6752-6759.</li>
+<li>Muramatsu H, Kato K, Watanabe N, et al. Risk factors for early death in neonates with Down syndrome and transient leukaemia. <i>Br J Haematol</i> 2008;142:610-615.</li>
+<li>Indicadores de mortalidad por TAM: albúmina, Hb y leucocitos al diagnóstico. <i>Tohoku J Exp Med</i> 2023;261:51-56.</li>
+<li>Strullu M, Caye A, Lachenaud J, et al. Juvenile myelomonocytic leukaemia and Noonan syndrome. <i>J Med Genet</i> 2014;51:689-697.</li>
+<li>Observation and management of JMML and Noonan syndrome-associated myeloproliferative disorder. <i>Cancers</i> 2024;16:2749.</li>
+<li>Noonan syndrome-related myeloproliferative disorder occurring in the neonatal period. <i>J Pediatr Hematol Oncol</i> 2024;46:e176-e179.</li>
+<li>Curley A, Stanworth SJ, Willoughby K, et al. Randomized trial of platelet-transfusion thresholds in neonates (PlaNeT-2). <i>N Engl J Med</i> 2019;380:242-251.</li>
+</ol></div>
+<div class="card warnc small" style="color:var(--ink)">Herramienta de apoyo a la decisión, no sustituye el juicio clínico ni la valoración por hemato-oncología pediátrica. Las dosis deben verificarse con el protocolo institucional. Revisión de la evidencia: noviembre 2026.</div>
+<div class="foot">Dr. Jano Jaramillo — Médico Pediatra y Neonatólogo · Posgrado en Trastornos del Aprendizaje<br>Sala de Neonatología · Hospital Dr. Cecilio Castillero · Chitré, Panamá · v1.0</div>`;
+
+/* ======================= RENDER / EVENTOS ======================= */
+function render(keepFocus){
+  const main=$('#main');
+  const active=document.activeElement, key=active&&active.dataset?active.dataset.k:null, pos=active&&active.selectionStart;
+  main.innerHTML = V[view]();
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v===view));
+  if(keepFocus&&key){const el=main.querySelector(`[data-k="${key}"]`); if(el){el.focus(); try{el.setSelectionRange(pos,pos)}catch(e){}}}
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button'); if(!t) return;
+  if(t.dataset.v){view=t.dataset.v;render();window.scrollTo(0,0);return;}
+  if(t.dataset.go){view=t.dataset.go;render();window.scrollTo(0,0);return;}
+  if(t.dataset.ds){S.ds=t.dataset.ds;render();return;}
+  if(t.dataset.g){S.gata=t.dataset.g;render();return;}
+  if(t.dataset.fl){S.flow=t.dataset.fl;render();return;}
+  if(t.dataset.f){S.f[t.dataset.f]=!S.f[t.dataset.f];render();return;}
+  if(t.id==='reset'){Object.keys(S).forEach(k=>{if(!['ds','gata','flow','f'].includes(k))S[k]=null});S.ds='conf';S.gata='nd';S.flow='nd';S.f={};render();}
+});
+let deb;
+document.addEventListener('input',e=>{
+  const k=e.target.dataset&&e.target.dataset.k; if(!k) return;
+  S[k]=e.target.value.replace(',','.');
+  clearTimeout(deb); deb=setTimeout(()=>render(true),350);
+});
+$('#goBtn').addEventListener('click',()=>{$('#cover').classList.add('hidden');try{sessionStorage.setItem('cv','1')}catch(e){}});
+try{if(sessionStorage.getItem('cv'))$('#cover').classList.add('hidden')}catch(e){}
+
+function net(){const on=navigator.onLine;$('#netState').textContent=on?'en línea':'sin conexión';$('#netState').style.color=on?'#9fd4b4':'#f0b27a';}
+addEventListener('online',net);addEventListener('offline',net);net();
+render();
+
+/* ======================= PWA: manifiesto e ícono ======================= */
+(function(){
+  try{
+    const c=document.createElement('canvas');c.width=c.height=512;const x=c.getContext('2d');
+    const g=x.createRadialGradient(330,150,20,256,256,360);g.addColorStop(0,'#5a1a1f');g.addColorStop(1,'#1a0809');
+    x.fillStyle=g;x.fillRect(0,0,512,512);
+    x.fillStyle='#4b5aa0';x.beginPath();x.arc(256,230,150,0,Math.PI*2);x.fill();
+    x.fillStyle='#8796cf';[[380,160,26],[120,170,24],[390,290,22],[150,350,20]].forEach(([a,b,r])=>{x.beginPath();x.arc(a,b,r,0,Math.PI*2);x.fill();});
+    x.fillStyle='#6a2560';x.beginPath();x.ellipse(256,225,95,88,0,0,Math.PI*2);x.fill();
+    x.fillStyle='#e8b6d9';[[225,205,12],[290,190,9]].forEach(([a,b,r])=>{x.beginPath();x.arc(a,b,r,0,Math.PI*2);x.fill();});
+    x.fillStyle='#e07a5a';[200,240,280].forEach(a=>{x.beginPath();x.roundRect?x.roundRect(a,400,22,70,11):x.rect(a,400,22,70);x.fill();});
+    x.fillStyle='#f7efe4';x.font='600 54px Menlo,monospace';x.fillText('21',318,455);
+    const png=c.toDataURL('image/png');
+    const l=document.createElement('link');l.rel='apple-touch-icon';l.href=png;document.head.appendChild(l);
+    const fi=document.createElement('link');fi.rel='icon';fi.href=png;document.head.appendChild(fi);
+    const man={name:'CDSS Mieloproliferativo Neonatal',short_name:'Mielo Neo',start_url:location.href.split('#')[0],scope:'./',display:'standalone',background_color:'#2a0f12',theme_color:'#2a0f12',icons:[{src:png,sizes:'512x512',type:'image/png',purpose:'any maskable'}]};
+    const ml=document.createElement('link');ml.rel='manifest';ml.href='data:application/manifest+json,'+encodeURIComponent(JSON.stringify(man));document.head.appendChild(ml);
+  }catch(e){}
+})();
+if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+</body>
+</html>
